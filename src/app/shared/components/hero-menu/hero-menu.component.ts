@@ -53,4 +53,5 @@ export class HeroMenuComponent {
 		this.cartService.addToCart(item.id, item.name, item.description, item.price);
 		this.updateCartItemsCount();
 	}
+
 }
