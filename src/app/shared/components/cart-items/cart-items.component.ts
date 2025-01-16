@@ -13,12 +13,14 @@ import { CommonModule } from '@angular/common';
 export class CartItemsComponent implements OnInit {
 
 	cartItems: any[] = [];
+
 	totalPriceSignal = inject(CartService).getTotalPriceSignal();
+	cartItemsCount = inject(CartService).getCartItemsCount();
 	_menuService = inject(CartService).getMenu;
 
 	private cartService = inject(CartService);
 
-	constructor() {}
+	constructor(private router : Router) {}
 
 	ngOnInit() {
 		// Acceder al Signal a través del getter
@@ -38,6 +40,8 @@ export class CartItemsComponent implements OnInit {
 	decrementQuantity(id: string): void {
 		this.cartService.decrementQuantity(id);
 		this.cartItems = this.cartService.getCartItems();  // Actualizar el carrito después de decrementar
+
+		if(this.cartItemsCount() < 1) this.router.navigate(['/home']);
 	}
 
 }

@@ -18,6 +18,7 @@ export class ShoppingCartComponent implements OnInit {
 	title = 'Tu pedido'
 
 	totalPriceSignal = inject(CartService).getTotalPriceSignal();
+	cartItemsCount = inject(CartService).getCartItemsCount();
 
 	@ViewChild(CheckoutComponent) checkoutComponent?: CheckoutComponent;
 
@@ -41,9 +42,7 @@ export class ShoppingCartComponent implements OnInit {
 
 	goToCheckout() {
 		if(this.router.url === '/shopping-cart/checkout') {
-			// Mostrar lo que tiene mi form
 			this.formCommunicationService.triggerSubmitForm();
-
 		}
 		this.router.navigate(['/shopping-cart/checkout'])
 	}

@@ -21,5 +21,7 @@ export class NavbarComponent implements AfterViewInit {
 		initFlowbite();
 	}
 
-	goToOrders() { this.router.navigate(['/shopping-cart']) }
+	goToOrders() {
+		if(this.cartItemsCount() > 0) this.router.navigate(['/shopping-cart'])
+	}
 }

@@ -51,7 +51,6 @@ export class HeroMenuComponent {
 
 	// Método para agregar al carrito
 	addToCart(item: MenuItem): void {
-		navigator.vibrate(200);
 		this.cartService.addToCart(item.id, item.name, item.description, item.price);
 		this.updateCartItemsCount();
 	}
