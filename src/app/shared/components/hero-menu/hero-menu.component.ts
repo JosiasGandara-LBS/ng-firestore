@@ -16,6 +16,7 @@ export class HeroMenuComponent {
 	_menuService = inject(CartService).getMenu;
 
 	cartItemsCount: number = 0;
+	buttonClass: string = '';
 
 	constructor(
 		private router: Router,
@@ -50,6 +51,12 @@ export class HeroMenuComponent {
 
 	// Método para agregar al carrito
 	addToCart(item: MenuItem): void {
+		this.buttonClass = 'scale-110 -translate-y-1 bg-red-700';
+
+		setTimeout(() => {
+			this.buttonClass = '';
+		  }, 300); // Duración de la transición (300 ms)
+
 		this.cartService.addToCart(item.id, item.name, item.description, item.price);
 		this.updateCartItemsCount();
 	}

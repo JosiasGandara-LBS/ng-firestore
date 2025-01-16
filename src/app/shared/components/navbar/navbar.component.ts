@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, inject } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { CartService } from '../../../services/cart.service';
 import { CommonModule } from '@angular/common';
 import { initFlowbite } from 'flowbite';
@@ -7,7 +7,7 @@ import { initFlowbite } from 'flowbite';
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterLink],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.scss'
 })
@@ -19,10 +19,6 @@ export class NavbarComponent implements AfterViewInit {
 
 	ngAfterViewInit(): void {
 		initFlowbite();
-	}
-
-	changeSidebar() {
-		console.log("se tocó");
 	}
 
 	goToOrders() { this.router.navigate(['/shopping-cart']) }
