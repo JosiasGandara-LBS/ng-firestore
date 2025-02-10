@@ -16,7 +16,6 @@ export class HeroMenuComponent {
 	_menuService = inject(CartService).getMenu;
 
 	cartItemsCount: number = 0;
-	buttonClass: string = '';
 
 	constructor(
 		private router: Router,
@@ -54,5 +53,4 @@ export class HeroMenuComponent {
 		this.cartService.addToCart(item.id, item.name, item.description, item.price);
 		this.updateCartItemsCount();
 	}
-
 }

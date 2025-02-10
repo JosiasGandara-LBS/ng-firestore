@@ -1,0 +1,19 @@
+<div>
+  <div class="status-bar" [ngClass]="{'bg-red-500': !isKitchenOpen, 'bg-green-500': isKitchenOpen}">
+    <button (click)="toggleKitchenStatus()">{{ isKitchenOpen ? 'Cerrar Cocina' : 'Abrir Cocina' }}</button>
+  </div>
+  <form [formGroup]="searchForm">
+    <input type="text" placeholder="Buscar productos..." formControlName="query">
+  </form>
+  <button (click)="openAddProductModal()">Agregar Producto</button>
+  <div *ngFor="let product of products()" (click)="openEditProductModal(product)">
+    {{ product.name }}
+  </div>
+  <!-- Modal de agregar/editar producto -->
+  <div *ngIf="isModalOpen">
+    <!-- Modal content -->
+    <button (click)="closeModal()">Cerrar</button>
+  </div>
+</div>
+
+<products-product-modal></products-product-modal>
