@@ -3,10 +3,11 @@ import { EmployeesService } from '../../../services/employees.service';
 
 @Component({
   selector: 'app-users',
+  standalone: true,
   templateUrl: './employees.component.html',
   styleUrls: []
 })
-export class UsersComponent implements OnInit {
+export class EmployeesComponent implements OnInit {
   private empService = Inject(EmployeesService);
   users: any[] = [];
   filteredUsers: any[] = [];

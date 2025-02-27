@@ -3,6 +3,7 @@ export interface Product {
   name: string;
   price: number;
   description?: string;
-  category?: string;
-  // Add other properties as needed
+  category: string;
+  available: boolean;
+  image?: string;
 }

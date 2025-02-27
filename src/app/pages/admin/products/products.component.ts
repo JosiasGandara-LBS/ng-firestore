@@ -1,54 +1,96 @@
-import { Component, OnInit, signal, computed, Inject } from '@angular/core';
+import { ref } from 'firebase/storage';
+import { ProductModalComponent } from './../components/product-modal/product-modal.component';
+import { Component, OnInit, signal, computed, Inject, inject } from '@angular/core';
 import { ProductsService } from '../../../services/products.service'; // Adjust the path as necessary
 import { CommonModule } from '@angular/common';
 import { Product } from '../../../interfaces/product.interface'; // Adjust the path as necessary
-import { ProductModalComponent } from '../components/product-modal/product-modal.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 
 @Component({
   selector: 'app-products',
   templateUrl: './products.component.html',
   standalone: true,
-  imports: [CommonModule, ProductModalComponent, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule],
+  providers: [DialogService],
   styleUrls: []
 })
 export class ProductsComponent implements OnInit {
-  private productsService = Inject(ProductsService);
-  private formsModule = Inject(ReactiveFormsModule);
+	private dialogService = inject(DialogService);
+	private productsService = inject(ProductsService);
+	private fb = inject(FormBuilder);
 
-  public searchForm = this.formsModule.group({
-    query: ['']
-  });
+	private _products = signal<Product[]>([]);
+	public products = computed(() => this._products());
+	private _selectedProduct = signal<Product | null>(null);
+	public selectedProduct = computed(() => this._selectedProduct());
 
-  private _products = signal<Product[]>([]);
-  public products = computed(() => this._products().filter(product => product.name.toLowerCase().includes(this.searchForm.query.toLowerCase())));
+	public searchForm: FormGroup;
 
-  isModalOpen = false;
-  isKitchenOpen = true;
+	private ref: DynamicDialogRef | undefined;
 
+	constructor() {
+		this.searchForm = this.fb.group({
+			query: ['']
+		});
+	}
 
+	ngOnInit(): void {
+		this.productsService.getProducts().subscribe((products) => {
+			this._products.set(products);
+		});
 
-  ngOnInit() {
-    this.productsService.getProducts().subscribe((data: unknown) => {
-      const products = data as Product[];
-      this._products.set(products);
-    });
-  }
+		this.searchForm.get('searchTerm')?.valueChanges.subscribe((searchTerm) => {
+			this.filterProducts(searchTerm);
+		});
+	}
 
-  openAddProductModal() {
-    this.isModalOpen = true;
-  }
+	filterProducts(searchTerm: string) {
+		const filteredProducts = this._products().filter(product =>
+			product.name.toLowerCase().includes(searchTerm.toLowerCase())
+		);
+		this._products.set(filteredProducts);
+	}
 
-  openEditProductModal(product: any) {
-    this.isModalOpen = true;
-    this.productsService.selectedProduct.set(product);
-  }
+	isKitchenOpen = true;
 
-  closeModal() {
-    this.isModalOpen = false;
-  }
+	openAddProductModal() {
+	}
 
-  toggleKitchenStatus() {
-    this.isKitchenOpen = !this.isKitchenOpen;
-  }
+	openEditProductModal(product: any) {
+		this.productsService.selectedProduct.set(product);
+		this.ref = this.dialogService.open(ProductModalComponent, {
+			header: 'Editar producto',
+			modal: true,
+			keepInViewport: true,
+			width: '70%',
+			height: '80%',
+			contentStyle: { overflow: 'auto' }
+		});
+	}
+
+	closeModal() {
+	}
+
+	toggleKitchenStatus() {
+		this.isKitchenOpen = !this.isKitchenOpen;
+	}
+
+	setSelectedProduct(product: Product) {
+		this._selectedProduct.set(product);
+	}
+
+  // Método para organizar los platillos por categoría
+	organizeByCategory(items: Product[]): { [key: string]: Product[] } {
+	  return items.reduce((acc: { [key: string]: Product[] }, item: Product) => {
+		const categoryKey = item.category ? item.category : 'Uncategorized';
+
+		if (!acc[categoryKey]) {
+		  acc[categoryKey] = [];
+		}
+		acc[categoryKey].push(item);
+		return acc;
+	  }, {});
+	}
 }

@@ -7,17 +7,17 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class EmployeesService {
-  constructor() {}
+	constructor() {}
 
-  private _firestore = inject(Firestore);
-  
+	private _firestore = inject(Firestore);
 
-    getEmployees(name : string): Observable<Employee[]> {
-      const ordersCollection = collection(this._firestore, 'employees');
 
-      const ordersQuery = query(
-        ordersCollection, where('name', '==', name), orderBy('name', 'asc')
-      );
-      return collectionData(ordersQuery, { idField: 'id' }) as Observable<Employee[]>;
-    }
+	getEmployees(name : string): Observable<Employee[]> {
+		const ordersCollection = collection(this._firestore, 'employees');
+
+		const ordersQuery = query(
+		ordersCollection, where('name', '==', name), orderBy('name', 'asc')
+		);
+		return collectionData(ordersQuery, { idField: 'id' }) as Observable<Employee[]>;
+	}
 }

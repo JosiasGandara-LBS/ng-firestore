@@ -6,7 +6,23 @@ import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { getAuth, provideAuth } from '@angular/fire/auth';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { getStorage, provideStorage } from '@angular/fire/storage';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { importProvidersFrom } from '@angular/core';
+import { HttpClientModule } from '@angular/common/http';
+import { DynamicDialogModule } from 'primeng/dynamicdialog';
+
+
 
 export const appConfig: ApplicationConfig = {
-  providers: [provideRouter(routes, withViewTransitions()), provideFirebaseApp(() => initializeApp({"projectId":"testing-tres-islas","appId":"1:412195379396:web:400cf7c9d7bc131bfa9191","storageBucket":"testing-tres-islas.firebasestorage.app","apiKey":"AIzaSyBJP9cEDma41YiT53JJjsj8h8NLmqz_YMw","authDomain":"testing-tres-islas.firebaseapp.com","messagingSenderId":"412195379396"})), provideAuth(() => getAuth()), provideFirestore(() => getFirestore()), provideFirebaseApp(() => initializeApp({"projectId":"testing-tres-islas","appId":"1:412195379396:web:400cf7c9d7bc131bfa9191","storageBucket":"testing-tres-islas.firebasestorage.app","apiKey":"AIzaSyBJP9cEDma41YiT53JJjsj8h8NLmqz_YMw","authDomain":"testing-tres-islas.firebaseapp.com","messagingSenderId":"412195379396"})), provideStorage(() => getStorage())]
+  providers: [
+		provideRouter(routes, withViewTransitions()),
+		provideFirebaseApp(() => initializeApp({"projectId":"testing-tres-islas","appId":"1:412195379396:web:400cf7c9d7bc131bfa9191","storageBucket":"testing-tres-islas.firebasestorage.app","apiKey":"AIzaSyBJP9cEDma41YiT53JJjsj8h8NLmqz_YMw","authDomain":"testing-tres-islas.firebaseapp.com","messagingSenderId":"412195379396"})),
+		provideAuth(() => getAuth()),
+		provideFirestore(() => getFirestore()),
+		provideFirebaseApp(() => initializeApp({"projectId":"testing-tres-islas","appId":"1:412195379396:web:400cf7c9d7bc131bfa9191","storageBucket":"testing-tres-islas.firebasestorage.app","apiKey":"AIzaSyBJP9cEDma41YiT53JJjsj8h8NLmqz_YMw","authDomain":"testing-tres-islas.firebaseapp.com","messagingSenderId":"412195379396"})),
+		provideStorage(() => getStorage()),
+		importProvidersFrom(BrowserAnimationsModule),
+		importProvidersFrom(HttpClientModule),
+		importProvidersFrom(DynamicDialogModule)
+	],
 };
